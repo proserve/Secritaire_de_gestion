@@ -27,16 +27,27 @@ public class JpaConfiguration {
 
     @Bean
     public EntityManagerFactory entityManagerFactory() throws SQLException {
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setShowSql(true);
-        vendorAdapter.setGenerateDdl(true);
+        HibernateJpaVendorAdapter vendorAdapter = getHibernateJpaVendorAdapter();
 
+        LocalContainerEntityManagerFactoryBean factoryBean = getLocalContainerEntityManagerFactoryBean(vendorAdapter);
+
+        return factoryBean.getObject();
+    }
+
+    private LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean(HibernateJpaVendorAdapter vendorAdapter) throws SQLException {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
         factoryBean.setPackagesToScan("com.andima.secritaire.persistence.domain");
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         factoryBean.afterPropertiesSet();
-        return factoryBean.getObject();
+        return factoryBean;
+    }
+
+    private HibernateJpaVendorAdapter getHibernateJpaVendorAdapter() {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setShowSql(true);
+        vendorAdapter.setGenerateDdl(true);
+        return vendorAdapter;
     }
 
     @Bean
