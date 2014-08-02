@@ -40,18 +40,31 @@ public class JpaAssertion {
         session.doWork(new Work() {
             @Override
             public void execute(Connection connection) throws SQLException {
-                ResultSet columns = connection.getMetaData().getColumns(null, null, tableName.toUpperCase(), null);
-                while (columns.next()) {
-                    if (columns.getString(4).toUpperCase().equals(columnName.toUpperCase())) {
-                        rc.found = true;
-                    }
-                }
+                if (isExistInUpperAndLowerCase(connection, tableName, columnName))
+                    rc.found = true;
             }
         });
 
         if (!rc.found) {
             fail("Column [" + columnName + "] not found on table : " + tableName);
         }
+    }
+
+    private static boolean isExistInUpperAndLowerCase(Connection connection, String tableName, String columnName) throws SQLException {
+        return isTableHasColumnInConnection(connection, tableName, columnName)
+                || isTableHasColumnInConnection(connection, tableName.toLowerCase(), columnName)
+                || isTableHasColumnInConnection(connection, tableName.toUpperCase(), columnName);
+    }
+
+    private static boolean isTableHasColumnInConnection(Connection connection, String tableName, String columnName) throws SQLException {
+        boolean found = false;
+        ResultSet columns = connection.getMetaData().getColumns(null, null, tableName, null);
+        while (columns.next()) {
+            if (columns.getString(4).toUpperCase().equals(columnName.toUpperCase())) {
+                found = true;
+            }
+        }
+        return found;
     }
 
     static class ResultCollector {

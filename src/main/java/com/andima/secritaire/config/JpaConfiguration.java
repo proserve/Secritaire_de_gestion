@@ -1,9 +1,6 @@
 package com.andima.secritaire.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate3.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -15,22 +12,17 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-@Configuration
-public class JpaConfiguration {
+;
+
+public abstract class JpaConfiguration {
 
     @Bean
-    public DataSource dataSource() throws SQLException {
-        EmbeddedDatabaseBuilder databaseBuilder = new EmbeddedDatabaseBuilder();
-        databaseBuilder.setType(EmbeddedDatabaseType.HSQL);
-        return databaseBuilder.build();
-    }
+    public abstract DataSource dataSource() throws SQLException;
 
     @Bean
     public EntityManagerFactory entityManagerFactory() throws SQLException {
         HibernateJpaVendorAdapter vendorAdapter = getHibernateJpaVendorAdapter();
-
         LocalContainerEntityManagerFactoryBean factoryBean = getLocalContainerEntityManagerFactoryBean(vendorAdapter);
-
         return factoryBean.getObject();
     }
 
