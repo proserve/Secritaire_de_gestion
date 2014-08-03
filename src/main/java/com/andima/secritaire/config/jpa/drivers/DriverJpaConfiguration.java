@@ -1,4 +1,6 @@
-package com.andima.secritaire.config;
+package com.andima.secritaire.config.jpa.drivers;
+
+import com.andima.secritaire.config.jpa.JpaConfiguration;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;

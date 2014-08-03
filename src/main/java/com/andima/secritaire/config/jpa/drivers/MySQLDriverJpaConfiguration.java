@@ -1,5 +1,6 @@
-package com.andima.secritaire.config;
+package com.andima.secritaire.config.jpa.drivers;
 
+import com.andima.secritaire.config.jpa.JpaConfiguration;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import org.springframework.context.annotation.Configuration;
 

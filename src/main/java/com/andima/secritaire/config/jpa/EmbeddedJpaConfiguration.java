@@ -1,4 +1,4 @@
-package com.andima.secritaire.config;
+package com.andima.secritaire.config.jpa;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;

@@ -1,7 +1,7 @@
 package com.andima.secritaire.persistence.domain.integration;
 
 
-import com.andima.secritaire.config.MySQLDriverJpaConfiguration;
+import com.andima.secritaire.config.jpa.JpaConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +15,17 @@ import static com.andima.secritaire.persistence.domain.fixture.JpaAssertion.asse
 import static com.andima.secritaire.persistence.domain.fixture.JpaAssertion.assertThatTableHasColumn;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {MySQLDriverJpaConfiguration.class})
+@ContextConfiguration(classes = {JpaConfiguration.class})
 @Transactional
 
 public class ClientMappingIntegrationTest {
     @Autowired
     EntityManager entityManager;
 
+
     @Test
     public void thatClientCustomMappingWork() throws Exception {
+
         assertThatTableExiste(entityManager, "client");
         assertThatTableHasColumn(entityManager, "Client", "id");
         assertThatTableHasColumn(entityManager, "Client", "first_name");

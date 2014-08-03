@@ -1,23 +1,44 @@
-package com.andima.secritaire.config;
+package com.andima.secritaire.config.jpa;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate3.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-;
+@PropertySource("classpath:application.properties")
+@Configuration
+public class JpaConfiguration {
+    private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
+    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
+    private static final String PROPERTY_NAME_DATABASE_URL = "db.url";
+    private static final String PROPERTY_NAME_DATABASE_USERNAME = "db.username";
 
-public abstract class JpaConfiguration {
+    @Resource
+    private Environment environment;
 
     @Bean
-    public abstract DataSource dataSource() throws SQLException;
+    public DataSource dataSource() throws SQLException {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setPassword(environment.getProperty(PROPERTY_NAME_DATABASE_PASSWORD));
+        dataSource.setUsername(environment.getProperty(PROPERTY_NAME_DATABASE_USERNAME));
+        dataSource.setDriverClassName(environment.getProperty(PROPERTY_NAME_DATABASE_DRIVER));
+        dataSource.setUrl(environment.getProperty(PROPERTY_NAME_DATABASE_URL));
+        return dataSource;
+    }
+
+    ;
 
     @Bean
     public EntityManagerFactory entityManagerFactory() throws SQLException {
