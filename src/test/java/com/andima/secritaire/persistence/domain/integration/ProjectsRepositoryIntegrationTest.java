@@ -13,12 +13,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import javax.transaction.Transactional;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {JpaConfiguration.class})
 @Transactional
-@TransactionConfiguration(defaultRollback = true)
-public class ProjectsUpdateOperationTest {
+@TransactionConfiguration(defaultRollback = false)
+public class ProjectsRepositoryIntegrationTest {
     Project createSoftware;
     Project requirements;
     Project development;
@@ -28,17 +31,23 @@ public class ProjectsUpdateOperationTest {
     @Before
     public void setUp() throws Exception {
         createSoftware = PersistenceFixture.createProject("create a new software");
-        requirements =  PersistenceFixture.createProject("collect specifications");
+        requirements = PersistenceFixture.createProject("collect specifications");
         development = PersistenceFixture.createProject("development phase");
 
         requirements.setParentProject(createSoftware);
+        projectsRepository.save(requirements);
         development.setParentProject(createSoftware);
+        projectsRepository.save(development);
     }
 
 
     @Test
-    public void whenIUpdateParentProject_works() throws Exception {
+    public void findParentProject_works() throws Exception {
 
+        List<Project> ChildrenProjects = projectsRepository.findByParentProject(createSoftware);
+        assertEquals(2, ChildrenProjects.size());
+        assertEquals(requirements, ChildrenProjects.get(0));
+        assertEquals(development, ChildrenProjects.get(1));
     }
 
 

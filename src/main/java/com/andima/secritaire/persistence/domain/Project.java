@@ -53,9 +53,13 @@ public class Project {
     }
 
     public List<Project> getChildrenProjects() {
+
         return childrenProjects;
     }
 
+    public void setChildrenProjects(List<Project> childrenProjects) {
+        this.childrenProjects = childrenProjects;
+    }
 
     public Date getStartDate() {
         return startDate;
