@@ -50,13 +50,6 @@
             <version>9.3-1101-jdbc41</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.3.5.Final</version>
-        </dependency>
-
-
         <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
