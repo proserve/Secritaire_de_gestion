@@ -56,12 +56,6 @@ public class Project {
         return childrenProjects;
     }
 
-    public void setChildrenProjects(List<Project> childrenProjects) {
-        this.childrenProjects = childrenProjects;
-        for (Project childrenProject : childrenProjects) {
-            childrenProject.setParentProject(this);
-        }
-    }
 
     public Date getStartDate() {
         return startDate;

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(classes = {JpaConfiguration.class})
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-public class ProjectsCrudOperationTest {
+public class ProjectsUpdateOperationTest {
     Project createSoftware;
     Project requirements;
     Project development;
@@ -34,26 +34,27 @@ public class ProjectsCrudOperationTest {
         createSoftware = PersistenceFixture.createProject("create a new software");
         requirements = PersistenceFixture.createProject("collect specifications");
         development = PersistenceFixture.createProject("development phase");
-    }
 
-
-    @Test
-    public void whenISaveProjectWithParent_works() throws Exception {
         requirements.setParentProject(createSoftware);
-        Project savedRequirements = projectsRepository.save(requirements);
+        development.setParentProject(createSoftware);
+    }
 
-        assertEquals(savedRequirements.getParentProject(), createSoftware);
 
-        assertEquals(createSoftware.getChildrenProjects().get(0), requirements);
-        assertEquals(createSoftware.getChildrenProjects().size(), 1);
+    @Test
+    public void whenIUpdateParentProject_works() throws Exception {
+        assertEquals(development.getParentProject(), createSoftware);
+        requirements.setParentProject(development);
     }
 
     @Test
-    public void whenISaveProjectWithChildren_works() throws Exception {
+    public void whenIUpdateChildrenProject_works() throws Exception {
         List<Project> projects = new ArrayList<Project>();
         projects.add(requirements);
         projects.add(development);
-        createSoftware.setChildrenProjects(projects);
+
+        requirements.setParentProject(createSoftware);
+        development.setParentProject(createSoftware);
+
         Project savedCreateSoftware = projectsRepository.save(createSoftware);
 
         assertEquals(savedCreateSoftware.getChildrenProjects().size(), projects.size());
