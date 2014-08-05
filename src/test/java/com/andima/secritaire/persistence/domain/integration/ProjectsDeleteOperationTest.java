@@ -14,16 +14,14 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import javax.transaction.Transactional;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {JpaConfiguration.class})
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-public class ProjectsUpdateOperationTest {
+public class ProjectsDeleteOperationTest {
     Project createSoftware;
     Project requirements;
     Project development;
@@ -45,16 +43,15 @@ public class ProjectsUpdateOperationTest {
     }
 
     @Test
-    public void whenIUpdateParentProject_works() throws Exception {
-        List<Project> createSoftwareChildren = projectsRepository.findByParentProject(createSoftware);
-        assertEquals(requirements.getId(), createSoftwareChildren.get(0).getId());
+    public void whenIDeleteAProject_AllChildrenShouldBeDeleted() throws Exception {
+        assertNotNull(projectsRepository.findOne(createSoftware.getId()));
+        assertNotNull(projectsRepository.findOne(requirements.getId()));
+        assertNotNull(projectsRepository.findOne(development.getId()));
 
-        requirements.setParentProject(development);
-        projectsRepository.save(requirements);
+        projectsRepository.delete(createSoftware);
+        assertNull(projectsRepository.findOne(createSoftware.getId()));
+        assertNull(projectsRepository.findOne(requirements.getId()));
+        assertNull(projectsRepository.findOne(development.getId()));
 
-        createSoftwareChildren = projectsRepository.findByParentProject(createSoftware);
-        assertNotEquals(requirements.getId(), createSoftwareChildren.get(0).getId());
-        List<Project> developmentChildren = projectsRepository.findByParentProject(development);
-        assertEquals(requirements.getId(), developmentChildren.get(0).getId());
     }
 }

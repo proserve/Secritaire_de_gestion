@@ -1,5 +1,8 @@
 package com.andima.secritaire.persistence.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +20,7 @@ public class Project {
     private Project parentProject;
 
     @OneToMany(mappedBy = "parentProject")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Project> childrenProjects = new ArrayList<Project>();
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,15 +55,6 @@ public class Project {
         this.parentProject = parentProject;
     }
 
-    public List<Project> getChildrenProjects() {
-
-        return childrenProjects;
-    }
-
-    public void setChildrenProjects(List<Project> childrenProjects) {
-        this.childrenProjects = childrenProjects;
-    }
-
     public Date getStartDate() {
         return startDate;
     }
@@ -75,4 +70,6 @@ public class Project {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+
 }
