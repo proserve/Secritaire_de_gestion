@@ -12,7 +12,7 @@ public class Project {
     private Integer id;
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "parent_id")
     private Project parentProject;
 
@@ -49,7 +49,6 @@ public class Project {
 
     public void setParentProject(Project parentProject) {
         this.parentProject = parentProject;
-        parentProject.getChildrenProjects().add(this);
     }
 
     public List<Project> getChildrenProjects() {

@@ -35,19 +35,20 @@ public class ProjectsRepositoryIntegrationTest {
         development = PersistenceFixture.createProject("development phase");
 
         requirements.setParentProject(createSoftware);
-        projectsRepository.save(requirements);
         development.setParentProject(createSoftware);
-        projectsRepository.save(development);
     }
 
 
     @Test
     public void findParentProject_works() throws Exception {
-
+        projectsRepository.save(createSoftware);
+        projectsRepository.save(requirements);
+        projectsRepository.save(development);
         List<Project> ChildrenProjects = projectsRepository.findByParentProject(createSoftware);
+
         assertEquals(2, ChildrenProjects.size());
-        assertEquals(requirements, ChildrenProjects.get(0));
-        assertEquals(development, ChildrenProjects.get(1));
+        assertEquals(requirements.getId(), ChildrenProjects.get(0).getId());
+        assertEquals(development.getId(), ChildrenProjects.get(1).getId());
     }
 
 
