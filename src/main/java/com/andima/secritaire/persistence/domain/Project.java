@@ -21,6 +21,7 @@ public class Project {
 
     @OneToMany(mappedBy = "parentProject")
     @OnDelete(action = OnDeleteAction.CASCADE)
+
     private List<Project> childrenProjects = new ArrayList<Project>();
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -71,5 +72,11 @@ public class Project {
         this.endDate = endDate;
     }
 
+    public List<Project> getChildrenProjects() {
+        return childrenProjects;
+    }
 
+    public void setChildrenProjects(List<Project> childrenProjects) {
+        this.childrenProjects = childrenProjects;
+    }
 }

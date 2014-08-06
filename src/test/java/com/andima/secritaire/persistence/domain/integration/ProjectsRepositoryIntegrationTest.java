@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {JpaConfiguration.class})
 @Transactional
-@TransactionConfiguration(defaultRollback = false)
+@TransactionConfiguration(defaultRollback = true)
 public class ProjectsRepositoryIntegrationTest {
     Project createSoftware;
     Project requirements;
@@ -36,14 +36,20 @@ public class ProjectsRepositoryIntegrationTest {
 
         requirements.setParentProject(createSoftware);
         development.setParentProject(createSoftware);
-    }
 
-
-    @Test
-    public void findParentProject_works() throws Exception {
         projectsRepository.save(createSoftware);
         projectsRepository.save(requirements);
         projectsRepository.save(development);
+    }
+
+    /*@After
+    public void tearDown() throws Exception {
+        projectsRepository.delete(createSoftware);
+    }*/
+
+    @Test
+    public void findParentProject_works() throws Exception {
+
         List<Project> ChildrenProjects = projectsRepository.findByParentProject(createSoftware);
 
         assertEquals(2, ChildrenProjects.size());

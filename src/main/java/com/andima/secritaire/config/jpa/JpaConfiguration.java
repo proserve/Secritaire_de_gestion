@@ -40,8 +40,6 @@ public class JpaConfiguration {
         return dataSource;
     }
 
-    ;
-
     @Bean
     public EntityManagerFactory entityManagerFactory() throws SQLException {
         HibernateJpaVendorAdapter vendorAdapter = getHibernateJpaVendorAdapter();
@@ -49,7 +47,8 @@ public class JpaConfiguration {
         return factoryBean.getObject();
     }
 
-    private LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean(HibernateJpaVendorAdapter vendorAdapter) throws SQLException {
+    private LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean
+            (HibernateJpaVendorAdapter vendorAdapter) throws SQLException {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
         factoryBean.setPackagesToScan("com.andima.secritaire.persistence.domain");

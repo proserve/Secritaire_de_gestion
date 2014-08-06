@@ -7,6 +7,14 @@
     <groupId>com.andima</groupId>
     <artifactId>SecritaireDeGestion</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.2.2.v20140723</version>
+            </plugin></plugins>
+    </build>
     <dependencies>
         <!-- For test dependencies -->
         <dependency>
@@ -60,6 +68,17 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>1.6.2.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-rest-webmvc</artifactId>
+            <version>2.1.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!-- deployment dependencies-->
 
     </dependencies>
 
