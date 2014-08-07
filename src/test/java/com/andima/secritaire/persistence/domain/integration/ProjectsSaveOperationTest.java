@@ -44,6 +44,7 @@ public class ProjectsSaveOperationTest {
         projectsRepository.save(createSoftware);
         projectsRepository.save(requirements);
         projectsRepository.save(development);
+
         List<Project> byParentProject = projectsRepository.findByParentProject(createSoftware);
 
         assertEquals(requirements.getParentProject(), createSoftware);

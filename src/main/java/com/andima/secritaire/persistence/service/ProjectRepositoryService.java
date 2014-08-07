@@ -7,15 +7,16 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class ProjectServiceImpl implements ProjectService{
+public class ProjectRepositoryService implements ProjectService{
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectsRepository.class);
+
     @Override
-    public void save(Project project) {
+    public void create(com.andima.secritaire.core.domain.Project project) {
 
     }
 
     @Override
-    public void delete(Project project) {
+    public void delete(com.andima.secritaire.core.domain.Project project) {
 
     }
 
@@ -25,17 +26,22 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
+    public List<com.andima.secritaire.core.domain.Project> findProjectChildren(com.andima.secritaire.core.domain.Project project) {
+        return null;
+    }
+
+    @Override
     public List<Project> findProjectChildren(Project project) {
         return null;
     }
 
     @Override
-    public List<Project> findProjectChildrenById(Integer id) {
+    public List<com.andima.secritaire.core.domain.Project> findProjectChildrenById(Integer id) {
         return null;
     }
 
     @Override
-    public List<Project> findProjectByName(String name) {
+    public List<com.andima.secritaire.core.domain.Project> findProjectByName(String name) {
         return null;
     }
 }

@@ -7,13 +7,25 @@
     <groupId>com.andima</groupId>
     <artifactId>SecritaireDeGestion</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.version>1.6</java.version>
+        <guava.version>16.0.1</guava.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.2.2.v20140723</version>
-            </plugin></plugins>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
     <dependencies>
         <!-- For test dependencies -->
@@ -73,14 +85,16 @@
             <artifactId>spring-data-rest-webmvc</artifactId>
             <version>2.1.1.RELEASE</version>
         </dependency>
+
+        <!-- deployment dependencies-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
-        <!-- deployment dependencies-->
+        <!--Spring boot dependencies-->
+
 
     </dependencies>
-
 
 </project>
