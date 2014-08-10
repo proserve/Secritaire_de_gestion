@@ -2,7 +2,7 @@ package com.andima.secritaire.config.jpa.drivers;
 
 import com.andima.secritaire.config.jpa.JpaConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+//import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 
 @Configuration
-@PropertySource("classpath:application.properties")
+//@PropertySource("classpath:application.properties")
 public class PostgresDriverJpaConfiguration extends JpaConfiguration {
     private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
     private static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";

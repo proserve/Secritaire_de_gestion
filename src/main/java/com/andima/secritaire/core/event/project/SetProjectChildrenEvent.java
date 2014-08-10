@@ -1,7 +1,7 @@
 package com.andima.secritaire.core.event.project;
 
 
-import com.andima.secritaire.core.event.UpdateEvent;
+import com.andima.secritaire.core.event.requestEvent.UpdateEvent;
 
 import java.util.List;
 

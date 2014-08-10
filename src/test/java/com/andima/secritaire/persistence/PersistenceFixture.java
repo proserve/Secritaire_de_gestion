@@ -1,5 +1,6 @@
-package com.andima.secritaire.persistence.domain.fixture;
+package com.andima.secritaire.persistence;
 
+import com.andima.secritaire.core.event.project.ProjectDetail;
 import com.andima.secritaire.persistence.domain.Project;
 
 import java.util.Date;
@@ -14,5 +15,13 @@ public class PersistenceFixture {
         project.setStartDate(new Date());
         project.setEndDate(new Date(2014, 10, 10));
         return project;
+    }
+
+    public static ProjectDetail createProjectDetail(String name) {
+        ProjectDetail detail = new ProjectDetail();
+        detail.setName(name);
+        detail.setStartDate(new Date());
+        detail.setEndDate(new Date(2014, 10, 10));
+        return detail;
     }
 }

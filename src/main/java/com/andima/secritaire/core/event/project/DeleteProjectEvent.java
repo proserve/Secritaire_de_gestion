@@ -1,6 +1,6 @@
 package com.andima.secritaire.core.event.project;
 
-import com.andima.secritaire.core.event.DeleteEvent;
+import com.andima.secritaire.core.event.requestEvent.DeleteEvent;
 
 /**
  * Created by proserve on 07/08/2014.

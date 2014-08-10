@@ -2,8 +2,9 @@ package com.andima.secritaire.persistence.domain.integration;
 
 import com.andima.secritaire.config.jpa.JpaConfiguration;
 import com.andima.secritaire.persistence.domain.Project;
-import com.andima.secritaire.persistence.domain.fixture.PersistenceFixture;
+import com.andima.secritaire.persistence.PersistenceFixture;
 import com.andima.secritaire.persistence.repository.ProjectsRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +40,16 @@ public class ProjectsUpdateOperationTest {
         requirements.setParentProject(createSoftware);
         development.setParentProject(createSoftware);
 
+
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        projectsRepository.deleteAll();
+
+    }
+
+    private void saveAllProject() {
         projectsRepository.save(createSoftware);
         projectsRepository.save(requirements);
         projectsRepository.save(development);
@@ -46,6 +57,7 @@ public class ProjectsUpdateOperationTest {
 
     @Test
     public void whenIUpdateParentProject_works() throws Exception {
+        saveAllProject();
         List<Project> createSoftwareChildren = projectsRepository.findByParentProject(createSoftware);
         assertEquals(requirements.getId(), createSoftwareChildren.get(0).getId());
 

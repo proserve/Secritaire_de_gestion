@@ -1,6 +1,6 @@
 package com.andima.secritaire.core.event.project;
 
-import com.andima.secritaire.core.event.CreatedEvent;
+import com.andima.secritaire.core.event.responseEvent.CreatedEvent;
 
 public class ProjectCreatedEvent extends CreatedEvent {
 

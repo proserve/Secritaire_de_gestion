@@ -2,8 +2,9 @@ package com.andima.secritaire.persistence.domain.integration;
 
 import com.andima.secritaire.config.jpa.JpaConfiguration;
 import com.andima.secritaire.persistence.domain.Project;
-import com.andima.secritaire.persistence.domain.fixture.PersistenceFixture;
+import com.andima.secritaire.persistence.PersistenceFixture;
 import com.andima.secritaire.persistence.repository.ProjectsRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,11 @@ public class ProjectsDeleteOperationTest {
         projectsRepository.save(createSoftware);
         projectsRepository.save(requirements);
         projectsRepository.save(development);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        projectsRepository.deleteAll();
     }
 
     @Test

@@ -1,11 +1,12 @@
 package com.andima.secritaire.core.event.project;
 
 
-import com.andima.secritaire.core.event.UpdatedEvent;
+import com.andima.secritaire.core.event.responseEvent.UpdatedEvent;
 
 public class ProjectUpdatedEvent extends UpdatedEvent {
     private int key;
     private ProjectDetail projectDetails;
+    public boolean notValidParent = false;
 
     public ProjectUpdatedEvent(int key, ProjectDetail projectDetails) {
         this.key = key;
@@ -27,6 +28,13 @@ public class ProjectUpdatedEvent extends UpdatedEvent {
     public static ProjectUpdatedEvent notFound(int key) {
         ProjectUpdatedEvent ev = new ProjectUpdatedEvent(key);
         ev.entityFound=false;
+        return ev;
+    }
+
+    public static ProjectUpdatedEvent sameParent(int key) {
+        ProjectUpdatedEvent ev = new ProjectUpdatedEvent(key);
+        ev.entityFound=true;
+        ev.notValidParent = true;
         return ev;
     }
 }

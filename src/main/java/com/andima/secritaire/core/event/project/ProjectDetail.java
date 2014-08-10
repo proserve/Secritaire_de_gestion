@@ -1,5 +1,7 @@
 package com.andima.secritaire.core.event.project;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * Created by proserve on 07/08/2014.
  */
 public class ProjectDetail {
+    @NotBlank
     private String name;
     private ProjectDetail parentProject;
     private List<ProjectDetail> childrenProjects;

@@ -1,6 +1,6 @@
 package com.andima.secritaire.core.event.project;
 
-import com.andima.secritaire.core.event.DeletedEvent;
+import com.andima.secritaire.core.event.responseEvent.DeletedEvent;
 
 /**
  * Created by proserve on 07/08/2014.
@@ -32,8 +32,8 @@ public class ProjectDeletedEvent extends DeletedEvent {
         return deletionCompleted;
     }
 
-    public static ProjectDeletedEvent DeletionForbiden(int key){
-        ProjectDeletedEvent deletedEvent = new ProjectDeletedEvent(key);
+    public static ProjectDeletedEvent DeletionForbiden(int key, ProjectDetail projectDetail){
+        ProjectDeletedEvent deletedEvent = new ProjectDeletedEvent(key, projectDetail);
         deletedEvent.deletionCompleted = false;
         deletedEvent.entityFound = true;
         return deletedEvent;

@@ -1,5 +1,7 @@
 package com.andima.secritaire.config.jpa;
 
+import com.andima.secritaire.persistence.service.ProjectPersistenceEventHandler;
+import com.andima.secritaire.persistence.service.ProjectPersistenceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -80,5 +82,10 @@ public class JpaConfiguration {
     @Bean
     public HibernateExceptionTranslator hibernateExceptionTranslator() throws SQLException {
         return new HibernateExceptionTranslator();
+    }
+
+    @Bean
+    public ProjectPersistenceService projectPersistenceService() throws SQLException{
+        return new ProjectPersistenceEventHandler();
     }
 }

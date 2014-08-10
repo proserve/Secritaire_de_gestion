@@ -1,7 +1,7 @@
 package com.andima.secritaire.core.event.project;
 
 
-import com.andima.secritaire.core.event.CreateEvent;
+import com.andima.secritaire.core.event.requestEvent.CreateEvent;
 
 public class CreateProjectEvent extends CreateEvent {
   private ProjectDetail details;
