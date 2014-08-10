@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +60,8 @@ public class ProjectPersistenceEventHandler implements ProjectPersistenceService
         return getProjectUpdatedEvent(setProjectParentEvent, project, parentProject);
     }
 
-        private ProjectUpdatedEvent getProjectUpdatedEvent(SetProjectParentEvent setProjectParentEvent, Project project, Project parentProject) {
+        private ProjectUpdatedEvent getProjectUpdatedEvent(SetProjectParentEvent setProjectParentEvent, Project project,
+                                                           Project parentProject) {
             if (project == null || parentProject == null) {
                 return ProjectUpdatedEvent.notFound(setProjectParentEvent.getKey());
             }
@@ -83,23 +83,34 @@ public class ProjectPersistenceEventHandler implements ProjectPersistenceService
             }
 
     public ProjectDeletedEvent deleteProject(DeleteProjectEvent deleteProjectEvent) {
-
         Project project = projectsRepository.findOne(deleteProjectEvent.getKey());
-
         if (project == null) {
             return ProjectDeletedEvent.notFound(deleteProjectEvent.getKey());
         }
-        try {
-            projectsRepository.delete(deleteProjectEvent.getKey());
-            return new ProjectDeletedEvent(deleteProjectEvent.getKey(), project.toProjectDetails());
-        }catch (Exception e){
-            return  ProjectDeletedEvent.DeletionForbiden(deleteProjectEvent.getKey(), project.toProjectDetails());
-        }
+        return getProjectDeletedEvent(deleteProjectEvent, project);
     }
 
+        private ProjectDeletedEvent getProjectDeletedEvent(DeleteProjectEvent deleteProjectEvent, Project project) {
+            try {
+                projectsRepository.delete(deleteProjectEvent.getKey());
+                return new ProjectDeletedEvent(deleteProjectEvent.getKey(), project.toProjectDetails());
+            }catch (Exception e){
+                return  ProjectDeletedEvent.DeletionForbiden(deleteProjectEvent.getKey(), project.toProjectDetails());
+            }
+        }
+
     public AllProjectChildrenEvent requestAllProjectChildren(RequestAllProjectsChildrenEvent projectChildrenEvent) {
-        return null;
+        Project parentProject = projectsRepository.findOne(projectChildrenEvent.getKey());
+        int key = projectChildrenEvent.getKey();
+        return getAllProjectChildrenEvent(parentProject, key);
     }
+
+        private AllProjectChildrenEvent getAllProjectChildrenEvent(Project parentProject, int key) {
+            if(parentProject == null) return AllProjectChildrenEvent.notFound(key);
+            List<Project> children = projectsRepository.findByParentProject(parentProject);
+            if(children.isEmpty()) return AllProjectChildrenEvent.noChildren(key, parentProject.toProjectDetails());
+            return new AllProjectChildrenEvent(key, parentProject.toProjectDetails(), getProjectDetailMap(children));
+        }
 
     public boolean isThisParentExciteInChildren(Project project, int parentKey) {
         for (Project child : getProjectChildren(project)) {

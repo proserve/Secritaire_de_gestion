@@ -138,7 +138,7 @@ public class ProjectPersistenceServiceTest {
         assertEquals(null, deletedEvent.getDetail());
     }
 
-    @Test  @Ignore
+    @Test  @Ignore(value = "to do when there are a problem with database")
     public void testDeleteProject_deletionNotCompleted() throws Exception{
         Project saved = projectsRepository.save(PersistenceFixture.createProject("test14"));
         Project test22 = PersistenceFixture.createProject("test24");
@@ -153,4 +153,57 @@ public class ProjectPersistenceServiceTest {
         assertEquals(true, deletedEvent.isEntityFound());
         assertEquals(false, deletedEvent.isDeletionCompleted());
     }
+
+    @Test
+    public void testRequestAllProjectChildren_emptyList() throws Exception{
+        Project saved = projectsRepository.save(PersistenceFixture.createProject("test14"));
+        RequestAllProjectsChildrenEvent event = new RequestAllProjectsChildrenEvent(saved.getId());
+        AllProjectChildrenEvent allProjectChildren = projectPersistenceService.requestAllProjectChildren(event);
+
+        assertEquals(true, allProjectChildren.isEntityFound());
+        assertEquals(saved.getName(), allProjectChildren.getProjectDetail().getName());
+        assertEquals(true, allProjectChildren.noChildren);
+        assertEquals(true, allProjectChildren.getChildren().isEmpty());
+    }
+
+    @Test
+    public void testRequestAllProjectChildren() throws Exception{
+        Project parent = projectsRepository.save(PersistenceFixture.createProject("parent"));
+        Project children = PersistenceFixture.createProject("children");
+        children.setParentProject(parent);
+        projectsRepository.save(children);
+
+        RequestAllProjectsChildrenEvent event = new RequestAllProjectsChildrenEvent(parent.getId());
+        AllProjectChildrenEvent allProjectChildren = projectPersistenceService.requestAllProjectChildren(event);
+
+        assertEquals(true, allProjectChildren.isEntityFound());
+        assertEquals(1, allProjectChildren.getChildren().size());
+        assertEquals(false, allProjectChildren.noChildren);
+        assertEquals(parent.getName(), allProjectChildren.getProjectDetail().getName());
+        assertEquals(children.getName(), allProjectChildren.getChildren().get(children.getId()).getName());
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

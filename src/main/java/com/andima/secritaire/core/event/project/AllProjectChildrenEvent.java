@@ -12,7 +12,7 @@ public class AllProjectChildrenEvent extends ReadEvent {
     private int  key;
     private ProjectDetail projectDetail;
     private Map<Integer, ProjectDetail> children = new HashMap<Integer, ProjectDetail>();
-    private boolean noChildren = false;
+    public boolean noChildren = false;
 
     public AllProjectChildrenEvent(int key) {
         this.key = key;
