@@ -1,4 +1,4 @@
-package com.andima.secritaire.desktop.sample;
+package com.andima.secritaire.client.ClientTest;
 
 import javafx.fxml.FXMLLoader;
 import org.springframework.context.ApplicationContext;
@@ -6,23 +6,30 @@ import org.springframework.context.ApplicationContext;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class SpringFxmlLoader {
+public class SpringFxmlLoader
+{
     private ApplicationContext context;
 
-    public SpringFxmlLoader(ApplicationContext context) {
+    public SpringFxmlLoader(ApplicationContext context)
+    {
         this.context = context;
     }
 
-    public Object load(String url, Class<?> controllerClass) throws IOException {
+    public Object load(String url, Class<?> controllerClass) throws IOException
+    {
         InputStream fxmlStream = null;
-        try {
+        try
+        {
             fxmlStream = controllerClass.getResourceAsStream(url);
             Object instance = context.getBean(controllerClass);
             FXMLLoader loader = new FXMLLoader();
             loader.getNamespace().put("controller", instance);
             return loader.load(fxmlStream);
-        } finally {
-            if (fxmlStream != null) {
+        }
+        finally
+        {
+            if (fxmlStream != null)
+            {
                 fxmlStream.close();
             }
         }
