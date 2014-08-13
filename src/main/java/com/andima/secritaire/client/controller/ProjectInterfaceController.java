@@ -1,7 +1,8 @@
-package com.andima.secritaire.client.ClientTest.controller;
+package com.andima.secritaire.client.controller;
 
-import com.andima.secritaire.client.ClientTest.domain.Project;
-import com.andima.secritaire.client.ClientTest.service.ProjectService;
+import com.andima.secritaire.client.domain.Project;
+import com.andima.secritaire.client.service.ProjectService;
+import com.andima.secritaire.client.util.SpringUtil;
 import com.panemu.tiwulfx.table.DateColumn;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -16,14 +17,18 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
-import org.springframework.beans.factory.annotation.Autowired;
+import javafx.util.converter.DefaultStringConverter;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.andima.secritaire.client.App.appStage;
+import static com.andima.secritaire.client.App.isMaxScreen;
+import static com.andima.secritaire.client.App.toMaxScreen;
 
 public class ProjectInterfaceController {
     @FXML
@@ -61,35 +66,21 @@ public class ProjectInterfaceController {
     @FXML
     private Label nameLabel;
 
-    @Autowired
-    ProjectService projectService;
+    ProjectService projectService = SpringUtil.getBean(ProjectService.class);
+
+    private double initX;
+    private double initY;
 
     public AnchorPane getView() {
         return view;
     }
 
     public void print() {
-        createContent();
+
     }
 
-    public void createContent() {
-        StringConverter<Object> sc = new StringConverter<Object>() {
-            public String toString(Object t) {
-                return t == null ? null : t.toString();
-            }
-
-            public Object fromString(String string) {
-                return string;
-            }
-        };
-        List<Project> col = projectService.requestAllProject();
-        for (Project project : col) {
-            System.out.println("loop start here");
-            Project parentProject = project.getParentProject();
-            if (parentProject != null) {
-                System.out.println("the id is " + parentProject.getName());
-            }
-        }
+    public void initialsTable() {
+        List<Project> col = projectService.getAllProject();
         final ObservableList<Project> data = FXCollections.observableArrayList(col);
         nameColumn.setCellValueFactory(new PropertyValueFactory<Project, String>("name"));
         endDateColumn.setCellValueFactory(new PropertyValueFactory<Project, Date>("endDate"));
@@ -102,7 +93,7 @@ public class ProjectInterfaceController {
                 return new SimpleObjectProperty<String>("/");
             }
         });
-        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn(sc));
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DefaultStringConverter()));
 
         List<String> parents = new ArrayList<String>();
         for (Project project : col) {
@@ -118,11 +109,11 @@ public class ProjectInterfaceController {
                 showProjectDetails(newValue);
             }
         });
-        DateColumn<Project> dateColumn = new DateColumn("startDate");
+        /*DateColumn<Project> dateColumn = new DateColumn("startDate");
         dateColumn.setText("Start Date");
         dateColumn.setPrefWidth(200);
         startDateColumn = dateColumn;
-        projectTable.getColumns().add(dateColumn);
+        projectTable.getColumns().add(dateColumn);*/
     }
 
     @FXML
@@ -134,7 +125,7 @@ public class ProjectInterfaceController {
         assert view != null : "fx:id=\"view\" was not injected: check your FXML file 'ProjectInterface.fxml'.";
         assert projectTable != null : "fx:id=\"projectTable\" was not injected: check your FXML file 'ProjectInterface.fxml'.";
         assert parentColumn != null : "fx:id=\"parentColumn\" was not injected: check your FXML file 'ProjectInterface.fxml'.";
-
+        initialsTable();
     }
 
     public void handleNewProject(ActionEvent actionEvent) {
@@ -147,6 +138,15 @@ public class ProjectInterfaceController {
 
     public void handleDeleteProject(ActionEvent actionEvent) {
 
+    }
+
+    public void mouseDragged(MouseEvent me){
+        appStage.setX(me.getScreenX() - initX);
+        appStage.setY(me.getScreenY() - initY);
+    }
+    public void mouseReleased(MouseEvent me){
+        initX = me.getScreenX() - appStage.getX();
+        initY = me.getScreenY() - appStage.getY();
     }
 
     private void showProjectDetails(Project project) {
@@ -170,6 +170,24 @@ public class ProjectInterfaceController {
             IDLabel.setText("");
             parentNameLabel.setText("");
         }
+    }
+    public void maximizeApp(MouseEvent me){
+        if(isMaxScreen){
+            appStage.setWidth(1024);
+            appStage.setHeight(800);
+            appStage.centerOnScreen();
+            isMaxScreen = false;
+        }else{
+            toMaxScreen();
+            isMaxScreen = true;
+        }
+
+    }
+    public void minimizeApp(MouseEvent me){
+        appStage.setIconified(true);
+    }
+    public void closeApp(MouseEvent me){
+        appStage.close();
     }
 
 }

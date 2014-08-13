@@ -35,7 +35,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>2.0</version>
                 <configuration>
-                    <mainClass>com.andima.secritaire.client.ClientTest.App</mainClass>
+                    <mainClass>com.andima.secritaire.client.App</mainClass>
                 </configuration>
                 <dependencies>
                     <dependency>

@@ -1,4 +1,4 @@
-package com.andima.secritaire.client.ClientTest;
+package com.andima.secritaire.client.util;
 
 import javafx.fxml.FXMLLoader;
 import org.springframework.context.ApplicationContext;

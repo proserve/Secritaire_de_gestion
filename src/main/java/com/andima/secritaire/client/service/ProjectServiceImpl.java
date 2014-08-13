@@ -1,8 +1,8 @@
-package com.andima.secritaire.client.ClientTest.service;
+package com.andima.secritaire.client.service;
 
-import com.andima.secritaire.client.ClientTest.domain.Project;
+import com.andima.secritaire.client.domain.Project;
 import com.andima.secritaire.core.event.project.*;
-import com.andima.secritaire.persistence.service.ProjectPersistenceService;
+import com.andima.secritaire.core.service.ProjectPersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ProjectPersistenceService projectPersistenceService;
     @Override
-    public List<Project> requestAllProject() {
+    public List<Project> getAllProject() {
         RequestAllProjectsEvent allProjectsEvent = new RequestAllProjectsEvent();
         AllProjectsEvent allProjects = projectPersistenceService.requestAllProjects(new RequestAllProjectsEvent());
         return  getProjectListFromAllProjectEvent(allProjects);

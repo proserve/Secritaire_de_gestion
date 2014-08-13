@@ -1,11 +1,11 @@
-package com.andima.secritaire.client.ClientTest.service;
+package com.andima.secritaire.client.service;
 
 
-import com.andima.secritaire.client.ClientTest.config.ServiceConfig;
-import com.andima.secritaire.client.ClientTest.domain.Project;
+import com.andima.secritaire.client.config.ServiceConfig;
+import com.andima.secritaire.client.domain.Project;
 import com.andima.secritaire.core.event.project.*;
 import com.andima.secritaire.persistence.PersistenceFixture;
-import com.andima.secritaire.persistence.service.ProjectPersistenceService;
+import com.andima.secritaire.core.service.ProjectPersistenceService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -46,7 +46,7 @@ public class ProjectServiceImplTest {
 
     @Test
     public void testRequestAllProject() throws Exception {
-        List<Project> projectList = projectService.requestAllProject();
+        List<Project> projectList = projectService.getAllProject();
         Assert.assertEquals(5, projectList.size());
     }
     

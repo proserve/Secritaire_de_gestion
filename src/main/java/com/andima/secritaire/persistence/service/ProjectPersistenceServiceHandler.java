@@ -1,6 +1,7 @@
 package com.andima.secritaire.persistence.service;
 
 import com.andima.secritaire.core.event.project.*;
+import com.andima.secritaire.core.service.ProjectPersistenceService;
 import com.andima.secritaire.persistence.domain.Project;
 import com.andima.secritaire.persistence.repository.ProjectsRepository;
 import org.slf4j.Logger;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProjectPersistenceEventHandler implements ProjectPersistenceService {
+public class ProjectPersistenceServiceHandler implements ProjectPersistenceService {
 
     @Autowired
     private ProjectsRepository projectsRepository;

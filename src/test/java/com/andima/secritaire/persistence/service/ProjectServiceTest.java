@@ -2,6 +2,7 @@ package com.andima.secritaire.persistence.service;
 
 import com.andima.secritaire.config.jpa.JpaConfiguration;
 import com.andima.secritaire.core.event.project.*;
+import com.andima.secritaire.core.service.ProjectPersistenceService;
 import com.andima.secritaire.persistence.PersistenceFixture;
 import com.andima.secritaire.persistence.domain.Project;
 import com.andima.secritaire.persistence.repository.ProjectsRepository;

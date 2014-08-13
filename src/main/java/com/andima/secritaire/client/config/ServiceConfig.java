@@ -1,7 +1,7 @@
-package com.andima.secritaire.client.ClientTest.config;
+package com.andima.secritaire.client.config;
 
-import com.andima.secritaire.client.ClientTest.service.ProjectService;
-import com.andima.secritaire.client.ClientTest.service.ProjectServiceImpl;
+import com.andima.secritaire.client.service.ProjectService;
+import com.andima.secritaire.client.service.ProjectServiceImpl;
 import com.andima.secritaire.config.jpa.JpaConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

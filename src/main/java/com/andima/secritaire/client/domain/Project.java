@@ -1,4 +1,4 @@
-package com.andima.secritaire.client.ClientTest.domain;
+package com.andima.secritaire.client.domain;
 
 import com.andima.secritaire.core.event.project.ProjectDetail;
 import javafx.beans.property.*;

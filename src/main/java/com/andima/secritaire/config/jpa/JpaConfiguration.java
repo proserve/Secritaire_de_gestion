@@ -1,7 +1,7 @@
 package com.andima.secritaire.config.jpa;
 
-import com.andima.secritaire.persistence.service.ProjectPersistenceEventHandler;
-import com.andima.secritaire.persistence.service.ProjectPersistenceService;
+import com.andima.secritaire.persistence.service.ProjectPersistenceServiceHandler;
+import com.andima.secritaire.core.service.ProjectPersistenceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -89,6 +89,6 @@ public class JpaConfiguration {
 
     @Bean
     public ProjectPersistenceService projectPersistenceService() throws SQLException{
-        return new ProjectPersistenceEventHandler();
+        return new ProjectPersistenceServiceHandler();
     }
 }

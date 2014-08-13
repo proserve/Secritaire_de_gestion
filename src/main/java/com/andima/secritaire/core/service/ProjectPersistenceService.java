@@ -1,4 +1,4 @@
-package com.andima.secritaire.persistence.service;
+package com.andima.secritaire.core.service;
 
 
 import com.andima.secritaire.core.event.project.*;
