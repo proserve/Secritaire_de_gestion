@@ -27,7 +27,8 @@ public class App extends Application {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.setTitle("Secritaire de gestion");
-        scene.getStylesheets().add("/css/DarkTheme.css");
+
+        scene.getStylesheets().add("/css/win7glass.css");
         stage.setResizable(true);
 
         appStage = stage;
