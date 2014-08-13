@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {JpaConfiguration.class})
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-public class ProjectPersistenceServiceTest {
+public class ProjectServiceTest {
 
     @Autowired
     private ProjectPersistenceService projectPersistenceService;
@@ -52,10 +52,10 @@ public class ProjectPersistenceServiceTest {
     public void testCreateProject_works() throws Exception {
         CreateProjectEvent createEvent = new CreateProjectEvent(createProjectDetail());
         ProjectCreatedEvent createdEvent = projectPersistenceService.createProject(createEvent);
-        Project createdProject = projectsRepository.findOne(createdEvent.getNewProjectKey());
+        Project createdProject = projectsRepository.findOne(createdEvent.getKey());
 
         assertNotNull(createdProject);
-        assertEquals(createdProject.getId().intValue(), createdEvent.getNewProjectKey());
+        assertEquals(createdProject.getId().intValue(), createdEvent.getKey());
         assertEquals(createdProject.getName(), createdEvent.getDetails().getName());
 
     }
@@ -181,6 +181,35 @@ public class ProjectPersistenceServiceTest {
         assertEquals(false, allProjectChildren.noChildren);
         assertEquals(parent.getName(), allProjectChildren.getProjectDetail().getName());
         assertEquals(children.getName(), allProjectChildren.getChildren().get(children.getId()).getName());
+    }
+
+
+    @Test
+    public void testRequestProjectParent() throws Exception{
+        Project parent = projectsRepository.save(PersistenceFixture.createProject("parent"));
+        Project children = PersistenceFixture.createProject("children");
+        children.setParentProject(parent);
+        projectsRepository.save(children);
+
+        RequestProjectParentEvent event = new RequestProjectParentEvent(children.getId());
+        ProjectDetailEvent detailEvent = projectPersistenceService.requestParentProjectDetail(event);
+
+        assertEquals(true, detailEvent.isEntityFound());
+        assertEquals(parent.getName(), detailEvent.getProjectDetail().getName());
+        assertEquals(parent.getId().intValue(), detailEvent.getKey());
+    }
+    @Test
+    public void testRequestProjectParent_noParent() throws Exception{
+        Project children = PersistenceFixture.createProject("children");
+        projectsRepository.save(children);
+
+        RequestProjectParentEvent event = new RequestProjectParentEvent(children.getId());
+        ProjectDetailEvent detailEvent = projectPersistenceService.requestParentProjectDetail(event);
+
+        assertEquals(true, detailEvent.isEntityFound());
+        assertEquals(false, detailEvent.isParentFound());
+        assertNull(detailEvent.getProjectDetail());
+        assertEquals(children.getId().intValue(), detailEvent.getKey());
     }
 }
 

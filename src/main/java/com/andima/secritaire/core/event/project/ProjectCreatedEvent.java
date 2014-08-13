@@ -4,11 +4,11 @@ import com.andima.secritaire.core.event.responseEvent.CreatedEvent;
 
 public class ProjectCreatedEvent extends CreatedEvent {
 
-  private final int newProjectKey;
+  private final int Key;
   private final ProjectDetail details;
 
-  public ProjectCreatedEvent(final int newProjectKey, final ProjectDetail details) {
-    this.newProjectKey = newProjectKey;
+  public ProjectCreatedEvent(final int Key, final ProjectDetail details) {
+    this.Key = Key;
     this.details = details;
   }
 
@@ -16,7 +16,7 @@ public class ProjectCreatedEvent extends CreatedEvent {
     return details;
   }
 
-  public int getNewProjectKey() {
-    return newProjectKey;
+  public int getKey() {
+    return Key;
   }
 }

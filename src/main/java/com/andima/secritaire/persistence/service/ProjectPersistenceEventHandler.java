@@ -20,7 +20,7 @@ public class ProjectPersistenceEventHandler implements ProjectPersistenceService
     Logger logger = LoggerFactory.getLogger(ProjectsRepository.class);
 
     public ProjectCreatedEvent createProject(CreateProjectEvent createProjectEvent) {
-        Project project = Project.fromOrderDetails(createProjectEvent.getDetails());
+        Project project = Project.fromProjectDetails(createProjectEvent.getDetails());
         project = projectsRepository.save(project);
         logger.info("project with (name = "+project.getName()+" || id = "+project.getId()+") was successfully created");
         return new ProjectCreatedEvent(project.getId(), project.toProjectDetails());
@@ -105,7 +105,21 @@ public class ProjectPersistenceEventHandler implements ProjectPersistenceService
         return getAllProjectChildrenEvent(parentProject, key);
     }
 
-        private AllProjectChildrenEvent getAllProjectChildrenEvent(Project parentProject, int key) {
+    @Override
+    public ProjectDetailEvent requestParentProjectDetail(RequestProjectParentEvent parentEvent) {
+        Project children = projectsRepository.findOne(parentEvent.getKey());
+        if (children == null) {
+            return ProjectDetailEvent.notFound(children.getId());
+        }
+        Project parent = children.getParentProject();
+
+        if (parent == null) {
+            return ProjectDetailEvent.parentNotFound(children.getId());
+        }
+        return new ProjectDetailEvent(parent.getId(), parent.toProjectDetails());
+    }
+
+    private AllProjectChildrenEvent getAllProjectChildrenEvent(Project parentProject, int key) {
             if(parentProject == null) return AllProjectChildrenEvent.notFound(key);
             List<Project> children = projectsRepository.findByParentProject(parentProject);
             if(children.isEmpty()) return AllProjectChildrenEvent.noChildren(key, parentProject.toProjectDetails());
@@ -127,4 +141,6 @@ public class ProjectPersistenceEventHandler implements ProjectPersistenceService
             } catch (NullPointerException e) {}
             return children;
         }
+
+
 }

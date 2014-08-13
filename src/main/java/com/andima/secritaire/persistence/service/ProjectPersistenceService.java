@@ -16,4 +16,7 @@ public interface ProjectPersistenceService {
   public ProjectDeletedEvent deleteProject(DeleteProjectEvent deleteOrderEvent);
 
   public AllProjectChildrenEvent requestAllProjectChildren(RequestAllProjectsChildrenEvent projectChildrenEvent);
+
+  public ProjectDetailEvent requestParentProjectDetail(RequestProjectParentEvent parentEvent);
+
 }

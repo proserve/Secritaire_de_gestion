@@ -1,15 +1,19 @@
-package com.andima.secritaire.client.ClientTest;
+package com.andima.secritaire.client.ClientTest.config;
 
+import com.andima.secritaire.client.ClientTest.Person;
 import com.andima.secritaire.client.ClientTest.controller.EnterDetailsController;
+import com.andima.secritaire.client.ClientTest.controller.ProjectInterfaceController;
 import com.andima.secritaire.client.ClientTest.controller.WelcomeController;
 import javafx.fxml.FXMLLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 @Configuration
+@Import(value = {ServiceConfig.class})
 public class AppFactory
 {
     @Bean
@@ -28,6 +32,12 @@ public class AppFactory
     public EnterDetailsController enterDetailsController() throws IOException
     {
         return (EnterDetailsController) loadController("/EnterDetails.fxml");
+    }
+
+    @Bean
+    public ProjectInterfaceController projectInterfaceController() throws IOException
+    {
+        return (ProjectInterfaceController) loadController("/ProjectInterface.fxml");
     }
 
     protected Object loadController(String url) throws IOException

@@ -5,6 +5,7 @@ package com.andima.secritaire.client.ClientTest.controller;
  */
 
 import com.andima.secritaire.client.ClientTest.Person;
+import com.andima.secritaire.persistence.repository.ProjectsRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,7 +17,8 @@ public class EnterDetailsController
     @FXML private Node view;
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
-
+    @Autowired
+    ProjectsRepository projectsRepository;
     @Autowired
     private Person person;
 
@@ -34,5 +36,6 @@ public class EnterDetailsController
     {
         person.setFirstName(firstNameField.getText());
         person.setLastName(lastNameField.getText());
+        projectsRepository.count();
     }
 }

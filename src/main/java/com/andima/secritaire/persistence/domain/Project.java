@@ -1,12 +1,10 @@
 package com.andima.secritaire.persistence.domain;
 
 import com.andima.secritaire.core.event.project.ProjectDetail;
-import com.andima.secritaire.persistence.repository.ProjectsRepository;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -44,9 +42,6 @@ public class Project {
     @NotNull(message = END_DATE_NULL_VALIDATION_MESSAGE)
     @Column(name = "end_date", nullable = false)
     private Date endDate;
-    private
-    @Autowired @Transient
-    ProjectsRepository projectsRepository;
 
     public Integer getId() {
         return id;
@@ -99,13 +94,19 @@ public class Project {
     public ProjectDetail toProjectDetails() {
         ProjectDetail details = new ProjectDetail();
         BeanUtils.copyProperties(this, details);
+        if (parentProject != null) {
+            ProjectDetail parentDetail = new ProjectDetail();
+            BeanUtils.copyProperties(parentProject, parentDetail);
+            details.setParentProject(parentDetail);
+            System.out.println("parentName" + parentProject.getName());
+            System.out.println("parent  Name" + parentDetail.getName());
+        }
         return details;
     }
 
-    public static Project fromOrderDetails(ProjectDetail ProjectDetails) {
+    public static Project fromProjectDetails(ProjectDetail ProjectDetails) {
         Project project = new Project();
         BeanUtils.copyProperties(ProjectDetails, project);
-
         return project;
     }
 }
