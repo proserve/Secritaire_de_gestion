@@ -5,19 +5,17 @@ import com.andima.secritaire.client.service.ProjectService;
 import com.andima.secritaire.client.util.SpringUtil;
 import com.panemu.tiwulfx.common.TableCriteria;
 import com.panemu.tiwulfx.common.TableData;
-import com.panemu.tiwulfx.dialog.MessageDialogBuilder;
 import com.panemu.tiwulfx.table.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.controlsfx.control.PopOver;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +64,7 @@ public class ProjectInterfaceController {
     private double initX;
     private double initY;
     private TableControl<Project> projectTableControl = new TableControl<Project>(Project.class);
+    private PopOver popOver;
 
 /*
     public void initialsTable() {
@@ -138,7 +137,9 @@ public class ProjectInterfaceController {
         projectTableControl.setAgileEditing(false);
         projectTableControl.setReloadOnCriteriaChange(true);
         TypeAheadColumn<Project, Project> parentColumn = new TypeAheadColumn("parentProject");
+        //createSampleProjects();
         final List<Project> allProject = projectService.getAllProject();
+
         for (Project project : allProject) {
             parentColumn.addItem(project.getName(), project);
         }
@@ -149,8 +150,7 @@ public class ProjectInterfaceController {
                     showProjectDetails(newValue);
                 }
             });
-
-        projectTableControl.addColumn(parentColumn);
+        projectTableControl.addColumn(parentColumn);;
         projectTableControl.setController(new TableController<Project>() {
                                               @Override
                                               public TableData<Project> loadData(int i, List<TableCriteria> tableCriterias,
@@ -166,32 +166,31 @@ public class ProjectInterfaceController {
                                                   return newRecords;
                                               }
 
-                                              public java.util.List<Project> update(List<Project> records) { /* compiled code */
+                                              public java.util.List<Project> update(List<Project> records) {
                                                   for (Project record : records) {
-                                                      System.out.println(record.getName());
+                                                      projectService.create(record);
                                                   }
                                                   return records;
                                               }
 
                                               public void delete(List<Project> records) {
+                                                  for (Project record : records) {
+                                                      projectService.delete(record.getId());
+                                                  }
                                               }
-                                          }
+                                          });
 
-        );
-
-            setTableColumnSize(projectTableControl, tableAnchorPane.getPrefWidth());
+        setTableColumnSize(projectTableControl, tableAnchorPane.getPrefWidth());
         projectTableControl.reload();
-        MenuItem menuItem = new MenuItem("info");
-        menuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                MessageDialogBuilder.info().message("Ticked record count: " ).show(appStage);
-            }
-        });
-        projectTableControl.addContextMenuItem(menuItem);
-        projectTableControl.setVisibleComponents(false, TableControl.Component.FOOTER);
-
+        projectTableControl.setMaxRecord(20);
+        projectTableControl.setAgileEditing(true);
         return projectTableControl;
+    }
+
+    private void createSampleProjects() {
+        for (int i = 0; i < 100; i++) {
+            projectService.create(new Project(new Date(), new Date(), "project "+ i));
+        }
     }
 
     private void  setTableColumnSize(TableControl projectTableControl, double width) {
@@ -207,11 +206,11 @@ public class ProjectInterfaceController {
     }
 
     public void handleEditProject(ActionEvent actionEvent) {
-
+        projectTableControl.edit();
     }
 
     public void handleDeleteProject(ActionEvent actionEvent) {
-
+        projectTableControl.delete();
     }
 
     public void mouseDragged(MouseEvent me) {

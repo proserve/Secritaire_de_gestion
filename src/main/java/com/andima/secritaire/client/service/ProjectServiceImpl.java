@@ -38,6 +38,19 @@ public class ProjectServiceImpl implements ProjectService {
         return resultProject;
     }
 
+    @Override
+    public ProjectDeletedEvent delete(int key) {
+       return projectPersistenceService.deleteProject(new DeleteProjectEvent(key));
+
+    }
+
+    @Override
+    public ProjectUpdatedEvent update(Project project) {
+        ProjectUpdatedEvent projectUpdatedEvent = projectPersistenceService.
+                setProjectParent(new SetProjectParentEvent(project.getId(), project.getParentProject().getId()));
+        return projectUpdatedEvent;
+    }
+
     private List<Project> getProjectListFromAllProjectEvent( AllProjectsEvent allProjects) {
             List<Project> projectList = new ArrayList<Project>();
             Map<Integer, ProjectDetail> projectDetailMap = allProjects.getProjects();

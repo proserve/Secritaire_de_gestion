@@ -74,4 +74,32 @@ public class ProjectServiceImplTest {
         assertNotNull(projectDetail);
 
     }
+
+    @Test
+    public void testDeleteProject() throws Exception{
+        String name = "project2";
+        Project project = projectService.create(new Project(new Date(), new Date(), name));
+        ProjectDeletedEvent deletedEvent= projectService.delete(project.getId());
+        assertEquals(project.getId(), deletedEvent.getKey());
+    }
+
+    @Test
+    public void testProjectUpdate_parent() throws Exception{
+        Project parent = new Project(new Date(), new Date(), "parent2");
+
+        Project children = new Project(new Date(), new Date(), "children2");
+
+        Project savedParent = projectService.create(parent);
+        projectService.create(children);
+
+        children.setParentProject(parent);
+
+        ProjectUpdatedEvent updatedProject = projectService.update(children);
+
+        int id = children.getId();
+        System.out.println("is n===>" + id);
+       // assertEquals(savedParent.getId(), projectService.getProjectParent(updatedProject.getKey()).getId());
+        projectService.delete(savedParent.getId());
+        projectService.delete(children.getId());
+    }
 }
